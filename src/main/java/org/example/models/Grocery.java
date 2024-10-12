@@ -10,12 +10,24 @@ public class Grocery {
     public static List<String> groceryList= new ArrayList<>();
 
     public static void addItems(String input){
-        groceryList.add(input);
+        String[] addArray = input.split(",");
+        for (String product : addArray) {
+            product = product.trim();
+            if (!checkItemIsInList(product)) {
+                groceryList.add(product);
+            }
+        }
         Collections.sort(groceryList);
+
     }
     public static void removeItems(String input){
-        groceryList.remove(input);
-        Collections.sort(groceryList);
+        String[] removeArray = input.split(",");
+        for (String product : removeArray) {
+            product = product.trim();
+            if (checkItemIsInList(product)) {
+                groceryList.remove(product);
+            }
+        }
     }
     public static boolean checkItemIsInList(String product){
        return groceryList.contains(product);
@@ -25,41 +37,37 @@ public class Grocery {
         System.out.println(groceryList);
     }
 
+    Scanner sc = new Scanner(System.in);
+
     public void startGrocery(){
-        Scanner sc = new Scanner(System.in);
+        int num;
+        do {
+            System.out.println("Uygulama başlatıldı. Lütfen komut giriniz." +
+                    " 0 - Uygulamayı durdur." +
+                    " 1 - Ürün ekleme" +
+                    " 2 - Ürün çıkarma");
 
-        System.out.println("Uygulama başlatıldı. Lütfen komut giriniz. " +
-                "0 - Uygulamayı durdur." +
-                "1 - Ürün ekleme" +
-                "2 - Ürün çıkarma");
-        int num = sc.nextInt();
+            num = sc.nextInt();
+            sc.nextLine();
+            switch (num){
+                case 1:
+                    System.out.println("Eklenmesini istediğiniz elemanları giriniz.");
+                    String willAdd = sc.nextLine(); //
+                    addItems(willAdd);
 
-        if(num == 0) {
-            System.out.println("Uygulama durduruldu");
-        } else if (num == 1){
-            System.out.println("Eklenmesini istediğiniz elemanları giriniz.");
-            Scanner str = new Scanner(System.in);
-            String nextProduct = str.nextLine();
-            String[] productArray = nextProduct.split(",");
-            for (String product : productArray) {
-                if (!checkItemIsInList(product)) {
-                    addItems(product);
-                }
+                    printSorted();
+                    break;
+                case 2:
+                    System.out.println("Cıkarılmasını istediğiniz elemanları giriniz.");
+                    String willRemove = sc.nextLine();
+                    removeItems(willRemove);
+                    printSorted();
+                    break;
             }
-        } else if (num == 2) {
-            System.out.println("Cıkarılmasını istediğiniz elemanları giriniz.");
-            Scanner str = new Scanner(System.in);
-            String nextProduct = str.nextLine();
-            String[] productArray = nextProduct.split(",");
-            for (String product : productArray) {
-                if (checkItemIsInList(product)) {
-                    removeItems(product);
-                }
-            }
-        } else {
-            System.out.println("Geçersiz komut! Lütfen 0 - 1 - 2 kullanınız.");
         }
+        while (num != 0);
 
+        sc.close();
 
     }
 }

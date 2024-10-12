@@ -21,7 +21,9 @@ public class MobilePhone {
     }
 
     public boolean addNewContact(Contact contact) {
-        if (myContacts.contains(contact)) {
+        if (contact == null || contact.getName() ==null ||
+                contact.getPhoneNumber() == null ||
+                myContacts.contains(contact)) {
             return false;
         } else {
             myContacts.add(contact);
@@ -46,8 +48,13 @@ public class MobilePhone {
     public int findContact(Contact contact){
         return myContacts.indexOf(contact);
     }
-    public int findContact(String contact){
-        return myContacts.indexOf(contact);
+    public int findContact(String name){
+        for (int i = 0 ; i < myContacts.size() ; i++){
+            if(myContacts.get(i).getName().equalsIgnoreCase(name)){
+                return i;
+            }
+        }
+        return -1;
     }
 
 
@@ -63,7 +70,7 @@ public class MobilePhone {
 
     public void printContact(){
         for (int i = 0 ; i < myContacts.size(); i++){
-            System.out.println( i + ". " + myContacts.get(i).getName() +
+            System.out.println( (i+1) + ". " + myContacts.get(i).getName() +
                                 " -> " + myContacts.get(i).getPhoneNumber());
         }
     }
